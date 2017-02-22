@@ -21,10 +21,11 @@ class ViewController: UIViewController, ENSideMenuDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-
-    @IBAction func toggleSideMenu(sender: AnyObject) {
+    @IBAction func toggleSideMenu(_ sender: Any) {
         toggleSideMenuView()
     }
+
+   
     
     // MARK: - ENSideMenu Delegate
     func sideMenuWillOpen() {

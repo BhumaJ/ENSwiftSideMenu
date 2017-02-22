@@ -141,6 +141,7 @@ open class ENSideMenu : NSObject, UIGestureRecognizerDelegate {
     fileprivate(set) var menuViewController : UIViewController!
     fileprivate var animator : UIDynamicAnimator!
     fileprivate var sourceView : UIView!
+    fileprivate var outView: UIView!
     fileprivate var needUpdateApperance : Bool = false
     /// The delegate of the side menu
     open weak var delegate : ENSideMenuDelegate?
@@ -274,12 +275,23 @@ open class ENSideMenu : NSObject, UIGestureRecognizerDelegate {
         else {
             // TODO: add blur for ios 7
         }
+        closeOnTap()
     }
 
+    func closeOnTap() {
+        outView = UIView(frame: CGRect(x: sideMenuContainerView.frame.width, y: 0, width: sourceView.frame.width - sideMenuContainerView.frame.width, height: sourceView.frame.height))
+        outView.backgroundColor = UIColor.clear
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideSideMenu))
+        
+        outView.addGestureRecognizer(tapRecognizer)
+        outView.isUserInteractionEnabled = false
+        sourceView.addSubview(outView)
+    }
     fileprivate func toggleMenu (_ shouldOpen: Bool) {
         if (shouldOpen && delegate?.sideMenuShouldOpenSideMenu?() == false) {
             return
         }
+        outView.isUserInteractionEnabled = shouldOpen
         updateSideMenuApperanceIfNeeded()
         isMenuOpen = shouldOpen
         var width:CGFloat
